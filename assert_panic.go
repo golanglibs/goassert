@@ -5,6 +5,8 @@ import (
 )
 
 func Panic(t *testing.T, underTest func()) {
+	t.Helper()
+
 	defer func() {
 		if r := recover(); r == nil {
 			t.Error("Expected panic but there was no panic")
@@ -15,6 +17,8 @@ func Panic(t *testing.T, underTest func()) {
 }
 
 func NotPanic(t *testing.T, underTest func()) {
+	t.Helper()
+
 	defer func() {
 		if r := recover(); r != nil {
 			t.Errorf("Expected no panic but there was panic: %v", r)
@@ -25,6 +29,8 @@ func NotPanic(t *testing.T, underTest func()) {
 }
 
 func PanicWithError[K comparable](t *testing.T, expectedError K, underTest func()) {
+	t.Helper()
+
 	defer func() {
 		r := recover()
 		if r == nil {
@@ -48,6 +54,8 @@ func PanicWithError[K comparable](t *testing.T, expectedError K, underTest func(
 }
 
 func NotPanicWithError[K comparable](t *testing.T, expectedError K, underTest func()) {
+	t.Helper()
+
 	defer func() {
 		r := recover()
 		if r == nil {

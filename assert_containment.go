@@ -3,12 +3,16 @@ package goassert
 import "testing"
 
 func SliceContains[K comparable](t *testing.T, s []K, element K) {
+	t.Helper()
+
 	if !sliceContains(s, element) {
 		t.Errorf("Element %v could not be found in the slice %v", element, s)
 	}
 }
 
 func SliceNotContains[K comparable](t *testing.T, s []K, element K) {
+	t.Helper()
+
 	if sliceContains(s, element) {
 		t.Errorf("Element %v was not expected to be found in the slice %v", element, s)
 	}
@@ -25,6 +29,8 @@ func sliceContains[K comparable](s []K, element K) bool {
 }
 
 func MapContains[K, V comparable](t *testing.T, m map[K]V, k K, v V) {
+	t.Helper()
+
 	actualValue, found := m[k]
 
 	if !found {
@@ -38,6 +44,8 @@ func MapContains[K, V comparable](t *testing.T, m map[K]V, k K, v V) {
 }
 
 func MapNotContains[K, V comparable](t *testing.T, m map[K]V, k K, v V) {
+	t.Helper()
+
 	value, found := m[k]
 
 	if found && v == value {

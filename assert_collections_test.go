@@ -2,6 +2,54 @@ package goassert
 
 import "testing"
 
+func Test_EmptySliceShouldPass_GivenEmptySlice(t *testing.T) {
+	tester := new(testing.T)
+
+	slice := make([]int, 0)
+
+	EmptySlice(tester, slice)
+
+	if tester.Failed() {
+		t.Error("EmptySlice did not pass when empty slice was given")
+	}
+}
+
+func Test_EmptySliceShouldFail_GivenNonEmptySlice(t *testing.T) {
+	tester := new(testing.T)
+
+	slice := []int{10, 3, 5}
+
+	EmptySlice(tester, slice)
+
+	if !tester.Failed() {
+		t.Error("EmptySlice did not fail when non-empty slice was given")
+	}
+}
+
+func Test_SliceLengthShouldPass_IfGivenSliceLengthMatchesGivenLength(t *testing.T) {
+	tester := new(testing.T)
+
+	slice := []int{10, 3, 5}
+
+	SliceLength(tester, slice, 3)
+
+	if tester.Failed() {
+		t.Error("SliceLength did not pass when given slice's length matches the expected length")
+	}
+}
+
+func Test_SliceLengthShouldFail_IfGivenSliceLengthDoesNotMatchGivenLength(t *testing.T) {
+	tester := new(testing.T)
+
+	slice := []int{10, 3, 5}
+
+	SliceLength(tester, slice, 5)
+
+	if !tester.Failed() {
+		t.Error("SliceLength did not fail when given slice's length does not match the expected length")
+	}
+}
+
 func Test_SliceContainsShouldPass_GivenElementInGivenSlice(t *testing.T) {
 	tester := new(testing.T)
 
@@ -51,6 +99,63 @@ func Test_SliceNotContainsShouldFail_GivenElementInGivenSlice(t *testing.T) {
 
 	if !tester.Failed() {
 		t.Error("SliceNotContains did not fail when given element is not found within given slice")
+	}
+}
+
+func Test_EmptyMapShouldPass_GivenEmptyMap(t *testing.T) {
+	tester := new(testing.T)
+
+	m := make(map[int]int, 0)
+
+	EmptyMap(tester, m)
+
+	if tester.Failed() {
+		t.Error("EmptyMap did not pass given empty map")
+	}
+}
+
+func Test_EmptyMapShouldFail_GivenNonEmptyMap(t *testing.T) {
+	tester := new(testing.T)
+
+	m := map[int]int{
+		10: 10,
+		5:  5,
+	}
+
+	EmptyMap(tester, m)
+
+	if !tester.Failed() {
+		t.Error("EmptyMap did not fail given non-empty map")
+	}
+}
+
+func Test_MapLengthShouldPass_IfGivenMapLengthMatchesGivenLength(t *testing.T) {
+	tester := new(testing.T)
+
+	m := map[int]int{
+		10: 10,
+		5:  5,
+	}
+
+	MapLength(tester, m, 2)
+
+	if tester.Failed() {
+		t.Error("MapLength did not pass when given map's length matches expected length")
+	}
+}
+
+func Test_MapLengthShouldFail_IfGivenMapLengthDoesNotMatchGivenLength(t *testing.T) {
+	tester := new(testing.T)
+
+	m := map[int]int{
+		10: 10,
+		5:  5,
+	}
+
+	MapLength(tester, m, 10)
+
+	if !tester.Failed() {
+		t.Error("MapLength did not fail when given map's length does not match expected length")
 	}
 }
 

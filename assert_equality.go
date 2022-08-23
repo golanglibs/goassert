@@ -6,24 +6,32 @@ import (
 )
 
 func Equal[K comparable](t testing.TB, expected K, actual K) {
+	t.Helper()
+
 	if actual != expected {
 		t.Error(inequalityMsg(expected, actual))
 	}
 }
 
 func NotEqual[K comparable](t testing.TB, expected K, actual K) {
+	t.Helper()
+
 	if actual == expected {
 		t.Error(equalityMsg(expected))
 	}
 }
 
 func Nil(t testing.TB, actual interface{}) {
+	t.Helper()
+
 	if !isNil(actual) {
 		t.Error(inequalityMsg(nil, actual))
 	}
 }
 
 func NotNil(t testing.TB, actual interface{}) {
+	t.Helper()
+
 	if isNil(actual) {
 		t.Error(equalityMsg("nil"))
 	}
@@ -43,12 +51,16 @@ func isNil(value interface{}) bool {
 }
 
 func EqualSlice[K comparable](t testing.TB, expected []K, actual []K) {
+	t.Helper()
+
 	if !areEqualSlices(expected, actual) {
 		t.Error(inequalityMsg(expected, actual))
 	}
 }
 
 func NotEqualSlice[K comparable](t testing.TB, expected []K, actual []K) {
+	t.Helper()
+
 	if areEqualSlices(expected, actual) {
 		t.Error(equalityMsg(expected))
 	}
@@ -71,12 +83,16 @@ func areEqualSlices[K comparable](expected []K, actual []K) bool {
 }
 
 func SimilarSlice[K comparable](t testing.TB, expected []K, actual []K) {
+	t.Helper()
+
 	if !areSimilarSlices(expected, actual) {
 		t.Error(inequalityMsg(expected, actual))
 	}
 }
 
 func NotSimilarSlice[K comparable](t testing.TB, expected []K, actual []K) {
+	t.Helper()
+
 	if areSimilarSlices(expected, actual) {
 		t.Error(equalityMsg(expected))
 	}
@@ -103,12 +119,16 @@ func areSimilarSlices[K comparable](expected []K, actual []K) bool {
 }
 
 func EqualMap[K, V comparable](t testing.TB, expected map[K]V, actual map[K]V) {
+	t.Helper()
+
 	if !isEqualMap(expected, actual) {
 		t.Error(inequalityMsg(expected, actual))
 	}
 }
 
 func NotEqualMap[K, V comparable](t testing.TB, expected map[K]V, actual map[K]V) {
+	t.Helper()
+
 	if isEqualMap(expected, actual) {
 		t.Error(equalityMsg(expected))
 	}

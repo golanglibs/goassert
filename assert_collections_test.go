@@ -26,6 +26,30 @@ func Test_EmptySliceShouldFail_GivenNonEmptySlice(t *testing.T) {
 	}
 }
 
+func Test_NotEmptySliceShouldPass_GivenNonEmptySlice(t *testing.T) {
+	tester := new(testing.T)
+
+	slice := []int{10, 16}
+
+	NotEmptySlice(tester, slice)
+
+	if tester.Failed() {
+		t.Error("NotEmptySlice did not pass when non-empty slice was given")
+	}
+}
+
+func Test_NotEmptySliceShouldFail_GivenNonEmptySlice(t *testing.T) {
+	tester := new(testing.T)
+
+	slice := make([]int, 0)
+
+	NotEmptySlice(tester, slice)
+
+	if !tester.Failed() {
+		t.Error("NotEmptySlice did not fail when empty slice was given")
+	}
+}
+
 func Test_SliceLengthShouldPass_IfGivenSliceLengthMatchesGivenLength(t *testing.T) {
 	tester := new(testing.T)
 
@@ -126,6 +150,33 @@ func Test_EmptyMapShouldFail_GivenNonEmptyMap(t *testing.T) {
 
 	if !tester.Failed() {
 		t.Error("EmptyMap did not fail given non-empty map")
+	}
+}
+
+func Test_NotEmptyMapShouldPass_GivenNonEmptyMap(t *testing.T) {
+	tester := new(testing.T)
+
+	m := map[int]int{
+		10: 5,
+		16: 16,
+	}
+
+	NotEmptyMap(tester, m)
+
+	if tester.Failed() {
+		t.Error("NotEmptyMap did not pass given non-empty map")
+	}
+}
+
+func Test_NotEmptyMapShouldFail_GivenNonEmptyMap(t *testing.T) {
+	tester := new(testing.T)
+
+	m := make(map[int]int, 0)
+
+	NotEmptyMap(tester, m)
+
+	if !tester.Failed() {
+		t.Error("NotEmptyMap did not fail given empty map")
 	}
 }
 

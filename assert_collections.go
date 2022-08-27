@@ -2,6 +2,9 @@ package goassert
 
 import "testing"
 
+/*
+Asserts that the given slice is empty. The assertion fails if the given slice is nil
+*/
 func EmptySlice[T any](t testing.TB, s []T) {
 	t.Helper()
 
@@ -16,6 +19,9 @@ func EmptySlice[T any](t testing.TB, s []T) {
 	}
 }
 
+/*
+Asserts that the given slice is not nil or empty
+*/
 func NotEmptySlice[T any](t testing.TB, s []T) {
 	t.Helper()
 
@@ -29,6 +35,9 @@ func NotEmptySlice[T any](t testing.TB, s []T) {
 	}
 }
 
+/*
+Asserts that the given slice has length equal to the specified expected length
+*/
 func SliceLength[T any](t testing.TB, s []T, expectedLength int) {
 	t.Helper()
 
@@ -38,6 +47,9 @@ func SliceLength[T any](t testing.TB, s []T, expectedLength int) {
 	}
 }
 
+/*
+Asserts that the given slice contains the given element. The element must be [comparable]
+*/
 func SliceContains[K comparable](t testing.TB, s []K, element K) {
 	t.Helper()
 
@@ -46,6 +58,9 @@ func SliceContains[K comparable](t testing.TB, s []K, element K) {
 	}
 }
 
+/*
+Asserts that the given slice does not contain the given element. The element must be [comparable]
+*/
 func SliceNotContains[K comparable](t testing.TB, s []K, element K) {
 	t.Helper()
 
@@ -64,6 +79,9 @@ func sliceContains[K comparable](s []K, element K) bool {
 	return false
 }
 
+/*
+Asserts that the given map is empty. The assertion will fail if the given map is nil
+*/
 func EmptyMap[K comparable, V any](t testing.TB, m map[K]V) {
 	t.Helper()
 
@@ -78,6 +96,9 @@ func EmptyMap[K comparable, V any](t testing.TB, m map[K]V) {
 	}
 }
 
+/*
+Asserts that the given map is not nil or empty
+*/
 func NotEmptyMap[K comparable, V any](t testing.TB, m map[K]V) {
 	t.Helper()
 
@@ -91,6 +112,9 @@ func NotEmptyMap[K comparable, V any](t testing.TB, m map[K]V) {
 	}
 }
 
+/*
+Asserts that the given map has length equal to the specified length
+*/
 func MapLength[K comparable, V any](t testing.TB, m map[K]V, expectedLength int) {
 	t.Helper()
 
@@ -100,6 +124,9 @@ func MapLength[K comparable, V any](t testing.TB, m map[K]V, expectedLength int)
 	}
 }
 
+/*
+Asserts that the given map contains the given key-value pair. The key and value must be [comparable]
+*/
 func MapContains[K, V comparable](t testing.TB, m map[K]V, k K, v V) {
 	t.Helper()
 
@@ -115,6 +142,9 @@ func MapContains[K, V comparable](t testing.TB, m map[K]V, k K, v V) {
 	}
 }
 
+/*
+Asserts that the given map does not contain the given key-value pair. The key and value must be [comparable]
+*/
 func MapNotContains[K, V comparable](t testing.TB, m map[K]V, k K, v V) {
 	t.Helper()
 

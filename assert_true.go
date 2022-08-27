@@ -2,6 +2,9 @@ package goassert
 
 import "testing"
 
+/*
+Asserts that the given value is true
+*/
 func True(t testing.TB, assertion bool) {
 	t.Helper()
 
@@ -10,6 +13,9 @@ func True(t testing.TB, assertion bool) {
 	}
 }
 
+/*
+Asserts that the given value is false
+*/
 func False(t testing.TB, assertion bool) {
 	t.Helper()
 

@@ -45,7 +45,7 @@ func Test_1Plus1ShouldEqual2(t *testing.T) {
 * `NotNil` - asserts the value is not nil
 * `EqualSlice` - asserts two slices have the same values in the same order. The elements must be comparable
 * `NotEqualSlice` - asserts two slices do not have the same values in the same order. The elements must be comparable
-* `SimilarSlice` - asserts two slices have the same values in either different or same order. The elements must be comparable
+* `SimilarSlice` - asserts two slices have the same values in any order. The elements must be comparable
 * `NotSimilarSlice` - asserts two slices do not have the same values. The elements must be comparable
 * `EqualMap` - asserts two maps have same key-value pairs. The values must be comparable
 * `NotEqualMap` - asserts two maps do not have same key-value pairs. The values must be comparable

@@ -5,6 +5,11 @@ import "testing"
 func EmptySlice[T any](t testing.TB, s []T) {
 	t.Helper()
 
+	if s == nil {
+		t.Error("Expected empty slice but got nil")
+		return
+	}
+
 	length := len(s)
 	if length != 0 {
 		t.Errorf("Expected empty slice but got slice with length %d", length)
@@ -13,6 +18,11 @@ func EmptySlice[T any](t testing.TB, s []T) {
 
 func NotEmptySlice[T any](t testing.TB, s []T) {
 	t.Helper()
+
+	if s == nil {
+		t.Error("Expected empty slice but got nil")
+		return
+	}
 
 	if len(s) == 0 {
 		t.Error("Expected non- empty slice but got empty slice")
@@ -57,6 +67,11 @@ func sliceContains[K comparable](s []K, element K) bool {
 func EmptyMap[K comparable, V any](t testing.TB, m map[K]V) {
 	t.Helper()
 
+	if m == nil {
+		t.Error("Expected empty map but got nil")
+		return
+	}
+
 	length := len(m)
 	if length != 0 {
 		t.Errorf("Expected empty map but got map with length of %d", length)
@@ -65,6 +80,11 @@ func EmptyMap[K comparable, V any](t testing.TB, m map[K]V) {
 
 func NotEmptyMap[K comparable, V any](t testing.TB, m map[K]V) {
 	t.Helper()
+
+	if m == nil {
+		t.Error("Expected non-empty map but got nil")
+		return
+	}
 
 	if len(m) == 0 {
 		t.Error("Expected non-empty map but got empty map")

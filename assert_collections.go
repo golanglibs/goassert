@@ -2,8 +2,13 @@ package goassert
 
 import "testing"
 
-func EmptySlice[T any](t *testing.T, s []T) {
+func EmptySlice[T any](t testing.TB, s []T) {
 	t.Helper()
+
+	if s == nil {
+		t.Error("Expected empty slice but got nil")
+		return
+	}
 
 	length := len(s)
 	if length != 0 {
@@ -11,7 +16,20 @@ func EmptySlice[T any](t *testing.T, s []T) {
 	}
 }
 
-func SliceLength[T any](t *testing.T, s []T, expectedLength int) {
+func NotEmptySlice[T any](t testing.TB, s []T) {
+	t.Helper()
+
+	if s == nil {
+		t.Error("Expected empty slice but got nil")
+		return
+	}
+
+	if len(s) == 0 {
+		t.Error("Expected non- empty slice but got empty slice")
+	}
+}
+
+func SliceLength[T any](t testing.TB, s []T, expectedLength int) {
 	t.Helper()
 
 	length := len(s)
@@ -20,7 +38,7 @@ func SliceLength[T any](t *testing.T, s []T, expectedLength int) {
 	}
 }
 
-func SliceContains[K comparable](t *testing.T, s []K, element K) {
+func SliceContains[K comparable](t testing.TB, s []K, element K) {
 	t.Helper()
 
 	if !sliceContains(s, element) {
@@ -28,7 +46,7 @@ func SliceContains[K comparable](t *testing.T, s []K, element K) {
 	}
 }
 
-func SliceNotContains[K comparable](t *testing.T, s []K, element K) {
+func SliceNotContains[K comparable](t testing.TB, s []K, element K) {
 	t.Helper()
 
 	if sliceContains(s, element) {
@@ -46,8 +64,13 @@ func sliceContains[K comparable](s []K, element K) bool {
 	return false
 }
 
-func EmptyMap[K comparable, V any](t *testing.T, m map[K]V) {
+func EmptyMap[K comparable, V any](t testing.TB, m map[K]V) {
 	t.Helper()
+
+	if m == nil {
+		t.Error("Expected empty map but got nil")
+		return
+	}
 
 	length := len(m)
 	if length != 0 {
@@ -55,7 +78,20 @@ func EmptyMap[K comparable, V any](t *testing.T, m map[K]V) {
 	}
 }
 
-func MapLength[K comparable, V any](t *testing.T, m map[K]V, expectedLength int) {
+func NotEmptyMap[K comparable, V any](t testing.TB, m map[K]V) {
+	t.Helper()
+
+	if m == nil {
+		t.Error("Expected non-empty map but got nil")
+		return
+	}
+
+	if len(m) == 0 {
+		t.Error("Expected non-empty map but got empty map")
+	}
+}
+
+func MapLength[K comparable, V any](t testing.TB, m map[K]V, expectedLength int) {
 	t.Helper()
 
 	length := len(m)
@@ -64,7 +100,7 @@ func MapLength[K comparable, V any](t *testing.T, m map[K]V, expectedLength int)
 	}
 }
 
-func MapContains[K, V comparable](t *testing.T, m map[K]V, k K, v V) {
+func MapContains[K, V comparable](t testing.TB, m map[K]V, k K, v V) {
 	t.Helper()
 
 	actualValue, found := m[k]
@@ -79,7 +115,7 @@ func MapContains[K, V comparable](t *testing.T, m map[K]V, k K, v V) {
 	}
 }
 
-func MapNotContains[K, V comparable](t *testing.T, m map[K]V, k K, v V) {
+func MapNotContains[K, V comparable](t testing.TB, m map[K]V, k K, v V) {
 	t.Helper()
 
 	value, found := m[k]

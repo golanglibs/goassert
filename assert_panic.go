@@ -4,7 +4,7 @@ import (
 	"testing"
 )
 
-func Panic(t *testing.T, underTest func()) {
+func Panic(t testing.TB, underTest func()) {
 	t.Helper()
 
 	defer func() {
@@ -16,7 +16,7 @@ func Panic(t *testing.T, underTest func()) {
 	underTest()
 }
 
-func NotPanic(t *testing.T, underTest func()) {
+func NotPanic(t testing.TB, underTest func()) {
 	t.Helper()
 
 	defer func() {
@@ -28,7 +28,7 @@ func NotPanic(t *testing.T, underTest func()) {
 	underTest()
 }
 
-func PanicWithError[K comparable](t *testing.T, expectedError K, underTest func()) {
+func PanicWithError[K comparable](t testing.TB, expectedError K, underTest func()) {
 	t.Helper()
 
 	defer func() {
@@ -53,7 +53,7 @@ func PanicWithError[K comparable](t *testing.T, expectedError K, underTest func(
 	underTest()
 }
 
-func NotPanicWithError[K comparable](t *testing.T, expectedError K, underTest func()) {
+func NotPanicWithError[K comparable](t testing.TB, expectedError K, underTest func()) {
 	t.Helper()
 
 	defer func() {

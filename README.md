@@ -59,8 +59,10 @@ func Test_1Plus1ShouldEqual2(t *testing.T) {
 * `EmptyMap` - asserts the map is empty. The assertion will fail if the map is nil
 * `NotEmptyMap` - asserts the map is not nil or empty
 * `MapLength` - asserts the map has the specified length
-* `MapContains` - asserts the map contains the specified key-value pair
-* `MapNotContains` - asserts the map does not contain the specified key-value pair
+* `MapContainsKey` - asserts the map contains the specified key. Key must be comparable
+* `MapNotContainsKey` - asserts the map does not contain the specified key. Key must be comparable
+* `MapContains` - asserts the map contains the specified key-value pair. Key and value must be comparable
+* `MapNotContains` - asserts the map does not contain the specified key-value pair. Key and value must be comparable
 
 ### Panic
 * `Panic` - asserts given function panics

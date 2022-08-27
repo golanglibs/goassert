@@ -5,6 +5,9 @@ import (
 	"testing"
 )
 
+/*
+Asserts that the two given values are equal. The given values must be [comparable]
+*/
 func Equal[K comparable](t testing.TB, expected K, actual K) {
 	t.Helper()
 
@@ -13,6 +16,9 @@ func Equal[K comparable](t testing.TB, expected K, actual K) {
 	}
 }
 
+/*
+Asserts that the two given values are not equal. The given values must be [comparable]
+*/
 func NotEqual[K comparable](t testing.TB, expected K, actual K) {
 	t.Helper()
 
@@ -21,6 +27,9 @@ func NotEqual[K comparable](t testing.TB, expected K, actual K) {
 	}
 }
 
+/*
+Asserts that the given value is nil
+*/
 func Nil(t testing.TB, actual interface{}) {
 	t.Helper()
 
@@ -29,6 +38,9 @@ func Nil(t testing.TB, actual interface{}) {
 	}
 }
 
+/*
+Asserts that the given value is not nil
+*/
 func NotNil(t testing.TB, actual interface{}) {
 	t.Helper()
 
@@ -50,6 +62,9 @@ func isNil(value interface{}) bool {
 	return false
 }
 
+/*
+Asserts that the two given slices have the same elements in the same order. The elements must be [comparable]
+*/
 func EqualSlice[K comparable](t testing.TB, expected []K, actual []K) {
 	t.Helper()
 
@@ -58,6 +73,9 @@ func EqualSlice[K comparable](t testing.TB, expected []K, actual []K) {
 	}
 }
 
+/*
+Asserts that the two given slices does not have the same elements in the same order. The elements must be [comparable]
+*/
 func NotEqualSlice[K comparable](t testing.TB, expected []K, actual []K) {
 	t.Helper()
 
@@ -82,6 +100,9 @@ func areEqualSlices[K comparable](expected []K, actual []K) bool {
 	return true
 }
 
+/*
+Asserts that the two given slices have the same values in any order. The elements must be [comparable]
+*/
 func SimilarSlice[K comparable](t testing.TB, expected []K, actual []K) {
 	t.Helper()
 
@@ -90,6 +111,9 @@ func SimilarSlice[K comparable](t testing.TB, expected []K, actual []K) {
 	}
 }
 
+/*
+Asserts that the two given slices does not have the same values. The elements must be [comparable]
+*/
 func NotSimilarSlice[K comparable](t testing.TB, expected []K, actual []K) {
 	t.Helper()
 
@@ -118,6 +142,9 @@ func areSimilarSlices[K comparable](expected []K, actual []K) bool {
 	return isEqualMap(expectedElementsMap, actualElementsMap)
 }
 
+/*
+Asserts that the two given maps have the same key-value pairs. The values must be [comparable]
+*/
 func EqualMap[K, V comparable](t testing.TB, expected map[K]V, actual map[K]V) {
 	t.Helper()
 
@@ -126,6 +153,9 @@ func EqualMap[K, V comparable](t testing.TB, expected map[K]V, actual map[K]V) {
 	}
 }
 
+/*
+Asserts that the two given maps does not have the same key-value pairs. The values must be [comparable]
+*/
 func NotEqualMap[K, V comparable](t testing.TB, expected map[K]V, actual map[K]V) {
 	t.Helper()
 

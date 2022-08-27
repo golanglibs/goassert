@@ -4,6 +4,9 @@ import (
 	"testing"
 )
 
+/*
+Asserts that the given function panics
+*/
 func Panic(t testing.TB, underTest func()) {
 	t.Helper()
 
@@ -16,6 +19,9 @@ func Panic(t testing.TB, underTest func()) {
 	underTest()
 }
 
+/*
+Asserts that the given function does not panic
+*/
 func NotPanic(t testing.TB, underTest func()) {
 	t.Helper()
 
@@ -28,6 +34,10 @@ func NotPanic(t testing.TB, underTest func()) {
 	underTest()
 }
 
+/*
+Asserts that the given function panics with the specified error.
+The actual error must be of the same type and value as the given error
+*/
 func PanicWithError[K comparable](t testing.TB, expectedError K, underTest func()) {
 	t.Helper()
 
@@ -53,6 +63,10 @@ func PanicWithError[K comparable](t testing.TB, expectedError K, underTest func(
 	underTest()
 }
 
+/*
+Asserts that the given function does not panic with the specified error.
+The assertion succeeds if the given function does not panic or panics with a different error
+*/
 func NotPanicWithError[K comparable](t testing.TB, expectedError K, underTest func()) {
 	t.Helper()
 

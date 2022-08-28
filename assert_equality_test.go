@@ -54,7 +54,7 @@ func Test_NotEqualShouldFail_WhenActualMatchesExpected(t *testing.T) {
 	}
 }
 
-func Test_NilShouldPass_GivenNilValue(t *testing.T) {
+func Test_NilShouldPass_GivenNilPointer(t *testing.T) {
 	tester := new(testing.T)
 
 	var valuePtr *string = nil
@@ -62,11 +62,59 @@ func Test_NilShouldPass_GivenNilValue(t *testing.T) {
 	Nil(tester, valuePtr)
 
 	if tester.Failed() {
-		t.Error("Nil did not pass when nil value was given")
+		t.Error("Nil did not pass when nil pointer was given")
 	}
 }
 
-func Test_NilShouldFail_GivenNonNilValue(t *testing.T) {
+func Test_NilShouldPass_GivenNilMap(t *testing.T) {
+	tester := new(testing.T)
+
+	var nilMap map[int]int = nil
+
+	Nil(tester, nilMap)
+
+	if tester.Failed() {
+		t.Error("Nil did not pass when nil map was given")
+	}
+}
+
+func Test_NilShouldPass_GivenNilSlice(t *testing.T) {
+	tester := new(testing.T)
+
+	var nilSlice []int = nil
+
+	Nil(tester, nilSlice)
+
+	if tester.Failed() {
+		t.Error("Nil did not pass when nil slice was given")
+	}
+}
+
+func Test_NilShouldPass_GivenNilChannel(t *testing.T) {
+	tester := new(testing.T)
+
+	var nilChan chan int = nil
+
+	Nil(tester, nilChan)
+
+	if tester.Failed() {
+		t.Error("Nil did not pass when nil channel was given")
+	}
+}
+
+func Test_NilShouldPass_GivenNilFunction(t *testing.T) {
+	tester := new(testing.T)
+
+	var nilFunc func() = nil
+
+	Nil(tester, nilFunc)
+
+	if tester.Failed() {
+		t.Error("Nil did not pass when nil function was given")
+	}
+}
+
+func Test_NilShouldFail_GivenNonNilPointer(t *testing.T) {
 	tester := new(testing.T)
 
 	value := "value"
@@ -79,7 +127,55 @@ func Test_NilShouldFail_GivenNonNilValue(t *testing.T) {
 	}
 }
 
-func Test_NotNilShouldPass_GivenNonNilValue(t *testing.T) {
+func Test_NilShouldFail_GivenNonNilMap(t *testing.T) {
+	tester := new(testing.T)
+
+	nonNilMap := make(map[int]int, 0)
+
+	Nil(tester, nonNilMap)
+
+	if !tester.Failed() {
+		t.Error("Nil did not fail when non-nil map was given")
+	}
+}
+
+func Test_NilShouldFail_GivenNonNilSlice(t *testing.T) {
+	tester := new(testing.T)
+
+	nonNilSlice := []int{10}
+
+	Nil(tester, nonNilSlice)
+
+	if !tester.Failed() {
+		t.Error("Nil did not fail when non-nil slice was given")
+	}
+}
+
+func Test_NilShouldFail_GivenNonNilChannel(t *testing.T) {
+	tester := new(testing.T)
+
+	nonNilChan := make(chan int)
+
+	Nil(tester, nonNilChan)
+
+	if !tester.Failed() {
+		t.Error("Nil did not fail when non-nil channel was given")
+	}
+}
+
+func Test_NilShouldFail_GivenNonNilFunction(t *testing.T) {
+	tester := new(testing.T)
+
+	nonNilFunc := func() {}
+
+	Nil(tester, nonNilFunc)
+
+	if !tester.Failed() {
+		t.Error("Nil did not fail when non-nil function was given")
+	}
+}
+
+func Test_NotNilShouldPass_GivenNonNilPointer(t *testing.T) {
 	tester := new(testing.T)
 
 	value := "value"
@@ -88,11 +184,59 @@ func Test_NotNilShouldPass_GivenNonNilValue(t *testing.T) {
 	NotNil(tester, valuePtr)
 
 	if tester.Failed() {
-		t.Error("NotNil did not pass when non-nil value was given")
+		t.Error("NotNil did not pass when non-nil pointer was given")
 	}
 }
 
-func Test_NotNilShouldFail_GivenNilValue(t *testing.T) {
+func Test_NotNilShouldPass_GivenNonNilMap(t *testing.T) {
+	tester := new(testing.T)
+
+	nonNilMap := make(map[int]int, 0)
+
+	NotNil(tester, nonNilMap)
+
+	if tester.Failed() {
+		t.Error("NotNil did not pass when non-nil map was given")
+	}
+}
+
+func Test_NotNilShouldPass_GivenNonNilSlice(t *testing.T) {
+	tester := new(testing.T)
+
+	nonNilSlice := []int{10}
+
+	NotNil(tester, nonNilSlice)
+
+	if tester.Failed() {
+		t.Error("NotNil did not pass when non-nil slice was given")
+	}
+}
+
+func Test_NotNilShouldPass_GivenNonNilChan(t *testing.T) {
+	tester := new(testing.T)
+
+	nonNilChan := make(chan int)
+
+	NotNil(tester, nonNilChan)
+
+	if tester.Failed() {
+		t.Error("NotNil did not pass when non-nil channel was given")
+	}
+}
+
+func Test_NotNilShouldPass_GivenNonNilFunction(t *testing.T) {
+	tester := new(testing.T)
+
+	nonNilFunc := func() {}
+
+	NotNil(tester, nonNilFunc)
+
+	if tester.Failed() {
+		t.Error("NotNil did not pass when non-nil function was given")
+	}
+}
+
+func Test_NotNilShouldFail_GivenNilPointer(t *testing.T) {
 	tester := new(testing.T)
 
 	var valuePtr *string = nil
@@ -100,7 +244,55 @@ func Test_NotNilShouldFail_GivenNilValue(t *testing.T) {
 	NotNil(tester, valuePtr)
 
 	if !tester.Failed() {
-		t.Error("NotNil did not fail when nil value was given")
+		t.Error("NotNil did not fail when nil pointer was given")
+	}
+}
+
+func Test_NotNilShouldFail_GivenNilMap(t *testing.T) {
+	tester := new(testing.T)
+
+	var nilMap map[int]int = nil
+
+	NotNil(tester, nilMap)
+
+	if !tester.Failed() {
+		t.Error("NotNil did not fail when nil map was given")
+	}
+}
+
+func Test_NotNilShouldFail_GivenNilSlice(t *testing.T) {
+	tester := new(testing.T)
+
+	var nilSlice []int = nil
+
+	NotNil(tester, nilSlice)
+
+	if !tester.Failed() {
+		t.Error("NotNil did not fail when nil slice was given")
+	}
+}
+
+func Test_NotNilShouldFail_GivenNilChannel(t *testing.T) {
+	tester := new(testing.T)
+
+	var nilChan chan int = nil
+
+	NotNil(tester, nilChan)
+
+	if !tester.Failed() {
+		t.Error("NotNil did not fail when nil channel was given")
+	}
+}
+
+func Test_NotNilShouldFail_GivenNilFunction(t *testing.T) {
+	tester := new(testing.T)
+
+	var nilFunc func() = nil
+
+	NotNil(tester, nilFunc)
+
+	if !tester.Failed() {
+		t.Error("NotNil did not fail when nil function was given")
 	}
 }
 

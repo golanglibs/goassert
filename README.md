@@ -41,6 +41,10 @@ func Test_1Plus1ShouldEqual2(t *testing.T) {
 ### Equality
 * `Equal` - asserts two values are equal. Values must be comparable
 * `NotEqual` - asserts two values are not equal. Values must be comparable
+* `DeepEqual` -  asserts two values are deeply equal. Internally uses `reflect.DeepEqual`.
+Can be used to assert equality of arrays, slices and maps
+* `NotDeepEqual` -  asserts two values are deeply not equal. Internally uses `reflect.DeepEqual`.
+Can be used to assert inequality of arrays, slices and maps
 * `Nil` - asserts the value is nil
 * `NotNil` - asserts the value is not nil
 * `SimilarSlice` - asserts two slices have the same values in any order. The elements must be comparable

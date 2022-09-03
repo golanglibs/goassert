@@ -28,6 +28,30 @@ func NotEqual[K comparable](t testing.TB, expected K, actual K) {
 }
 
 /*
+Asserts that the two given valus are deeply equal. Internally uses reflect.DeepEqual.
+The equality of arrays, slices and maps can be asserted with this method
+*/
+func DeepEqual[T any](t testing.TB, expected T, actual T) {
+	t.Helper()
+
+	if !reflect.DeepEqual(expected, actual) {
+		t.Error(inequalityMsg(expected, actual))
+	}
+}
+
+/*
+Asserts that the two given valus are not deeply equal. Internally uses reflect.DeepEqual.
+The inequality of arrays, slices and maps can be asserted with this method
+*/
+func NotDeepEqual[T any](t testing.TB, expected T, actual T) {
+	t.Helper()
+
+	if reflect.DeepEqual(expected, actual) {
+		t.Error(equalityMsg(expected))
+	}
+}
+
+/*
 Asserts that the given value is nil
 */
 func Nil(t testing.TB, actual interface{}) {
@@ -55,7 +79,7 @@ func isNil(value interface{}) bool {
 	}
 
 	switch reflect.TypeOf(value).Kind() {
-	case reflect.Ptr, reflect.Map, reflect.Slice, reflect.Chan, reflect.Func:
+	case reflect.Pointer, reflect.Map, reflect.Slice, reflect.Chan, reflect.Func:
 		return reflect.ValueOf(value).IsNil()
 	}
 
@@ -63,47 +87,9 @@ func isNil(value interface{}) bool {
 }
 
 /*
-Asserts that the two given slices have the same elements in the same order. The elements must be [comparable]
-*/
-func EqualSlice[K comparable](t testing.TB, expected []K, actual []K) {
-	t.Helper()
-
-	if !areEqualSlices(expected, actual) {
-		t.Error(inequalityMsg(expected, actual))
-	}
-}
-
-/*
-Asserts that the two given slices does not have the same elements in the same order. The elements must be [comparable]
-*/
-func NotEqualSlice[K comparable](t testing.TB, expected []K, actual []K) {
-	t.Helper()
-
-	if areEqualSlices(expected, actual) {
-		t.Error(equalityMsg(expected))
-	}
-}
-
-func areEqualSlices[K comparable](expected []K, actual []K) bool {
-	expectedLength := len(expected)
-	actualLength := len(actual)
-	if actualLength != expectedLength {
-		return false
-	}
-
-	for i := 0; i < expectedLength; i++ {
-		if actual[i] != expected[i] {
-			return false
-		}
-	}
-
-	return true
-}
-
-/*
 Asserts that the two given slices have the same values in any order. The elements must be [comparable]
 */
-func SimilarSlice[K comparable](t testing.TB, expected []K, actual []K) {
+func SimilarSlice[T any](t testing.TB, expected []T, actual []T) {
 	t.Helper()
 
 	if !areSimilarSlices(expected, actual) {
@@ -114,7 +100,7 @@ func SimilarSlice[K comparable](t testing.TB, expected []K, actual []K) {
 /*
 Asserts that the two given slices does not have the same values. The elements must be [comparable]
 */
-func NotSimilarSlice[K comparable](t testing.TB, expected []K, actual []K) {
+func NotSimilarSlice[T any](t testing.TB, expected []T, actual []T) {
 	t.Helper()
 
 	if areSimilarSlices(expected, actual) {
@@ -122,61 +108,26 @@ func NotSimilarSlice[K comparable](t testing.TB, expected []K, actual []K) {
 	}
 }
 
-func areSimilarSlices[K comparable](expected []K, actual []K) bool {
+func areSimilarSlices[T any](expected []T, actual []T) bool {
 	expectedLength := len(expected)
 	actualLength := len(actual)
 	if actualLength != expectedLength {
 		return false
 	}
 
-	expectedElementsMap := make(map[K]int, expectedLength)
-	for _, v := range expected {
-		expectedElementsMap[v] += 1
-	}
+	matchedIndexMap := make(map[int]interface{}, expectedLength)
+	for _, expectedValue := range expected {
+		for j, actualValue := range actual {
+			if !reflect.DeepEqual(expectedValue, actualValue) {
+				continue
+			}
 
-	actualElementsMap := make(map[K]int, actualLength)
-	for _, v := range actual {
-		actualElementsMap[v] += 1
-	}
-
-	return isEqualMap(expectedElementsMap, actualElementsMap)
-}
-
-/*
-Asserts that the two given maps have the same key-value pairs. The values must be [comparable]
-*/
-func EqualMap[K, V comparable](t testing.TB, expected map[K]V, actual map[K]V) {
-	t.Helper()
-
-	if !isEqualMap(expected, actual) {
-		t.Error(inequalityMsg(expected, actual))
-	}
-}
-
-/*
-Asserts that the two given maps does not have the same key-value pairs. The values must be [comparable]
-*/
-func NotEqualMap[K, V comparable](t testing.TB, expected map[K]V, actual map[K]V) {
-	t.Helper()
-
-	if isEqualMap(expected, actual) {
-		t.Error(equalityMsg(expected))
-	}
-}
-
-func isEqualMap[K, V comparable](expected map[K]V, actual map[K]V) bool {
-	expectedLength := len(expected)
-	actualLength := len(actual)
-	if actualLength != expectedLength {
-		return false
-	}
-
-	for actualKey, actualValue := range actual {
-		expectedValue, found := expected[actualKey]
-		if !found || actualValue != expectedValue {
-			return false
+			if _, alreadyMatched := matchedIndexMap[j]; !alreadyMatched {
+				matchedIndexMap[j] = nil
+				break
+			}
 		}
 	}
 
-	return true
+	return len(matchedIndexMap) == expectedLength
 }

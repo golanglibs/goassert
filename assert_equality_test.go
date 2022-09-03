@@ -54,6 +54,324 @@ func Test_NotEqualShouldFail_WhenActualMatchesExpected(t *testing.T) {
 	}
 }
 
+func Test_DeepEqualShouldPass_WhenActualMatchesExpected_GivenPrimitiveTypes(t *testing.T) {
+	tester := new(testing.T)
+
+	actual := 10
+	expected := 10
+
+	DeepEqual(tester, expected, actual)
+
+	if tester.Failed() {
+		t.Error("DeepEqual did not pass when actual matched expected given primitive types")
+	}
+}
+
+func Test_DeepEqualShouldPass_WhenActualMatchesExpected_GivenStructs(t *testing.T) {
+	tester := new(testing.T)
+
+	actual := *newMockStruct(10)
+	expected := *newMockStruct(10)
+
+	DeepEqual(tester, expected, actual)
+
+	if tester.Failed() {
+		t.Error("DeepEqual did not pass when actual matched expected given structs")
+	}
+}
+
+func Test_DeepEqualShouldPass_WhenActualMatchesExpected_GivenPointersToStruct(t *testing.T) {
+	tester := new(testing.T)
+
+	actual := newMockStruct(10)
+	expected := newMockStruct(10)
+
+	DeepEqual(tester, expected, actual)
+
+	if tester.Failed() {
+		t.Error("DeepEqual did not pass when actual matched expected given pointers to struct")
+	}
+}
+
+func Test_DeepEqualShouldPass_WhenActualMatchesExpected_GivenSlicesEqualInValuesAndOrder(t *testing.T) {
+	tester := new(testing.T)
+
+	expectedSlice := []int{3, 10, 5, 16}
+	actualSlice := []int{3, 10, 5, 16}
+
+	DeepEqual(tester, expectedSlice, actualSlice)
+
+	if tester.Failed() {
+		t.Error("DeepEqual did not pass when given two slices with same elements in the same order")
+	}
+}
+
+func Test_DeepEqualShouldPass_WhenActualMatchesExpected_GivenSliceOfPointers(t *testing.T) {
+	tester := new(testing.T)
+
+	expectedSlice := []*mockStruct{newMockStruct(10), newMockStruct(16)}
+	actualSlice := []*mockStruct{newMockStruct(10), newMockStruct(16)}
+
+	DeepEqual(t, expectedSlice, actualSlice)
+
+	if tester.Failed() {
+		t.Error("DeepEqual did not pass when given two slices of pointers with the same elements in same order")
+	}
+}
+
+func Test_DeepEqualShouldPass_WhenActualMatchesExpected_GivenMapsWithEqualKeysAndValues(t *testing.T) {
+	tester := new(testing.T)
+
+	expectedMap := map[int]*mockStruct{
+		10: newMockStruct(10),
+		5:  newMockStruct(5),
+		16: newMockStruct(16),
+	}
+	actualMap := map[int]*mockStruct{
+		10: newMockStruct(10),
+		5:  newMockStruct(5),
+		16: newMockStruct(16),
+	}
+
+	DeepEqual(tester, expectedMap, actualMap)
+
+	if tester.Failed() {
+		t.Error("DeepEqual did not pass when given two maps with same key-value pairs")
+	}
+}
+
+func Test_DeepEqualShouldFail_WhenActualDoesNotMatchExpected_GivenPrimitiveTypes(t *testing.T) {
+	tester := new(testing.T)
+
+	actual := 10
+	expected := 16
+
+	DeepEqual(tester, expected, actual)
+
+	if !tester.Failed() {
+		t.Error("DeepEqual did not fail when actual did not match expected given primitive types")
+	}
+}
+
+func Test_DeepEqualShouldFail_WhenActualDoesNotMatchExpected_GivenStructs(t *testing.T) {
+	tester := new(testing.T)
+
+	actual := *newMockStruct(10)
+	expected := *newMockStruct(16)
+
+	DeepEqual(tester, expected, actual)
+
+	if !tester.Failed() {
+		t.Error("DeepEqual did not fail when actual did not match expected given structs")
+	}
+}
+
+func Test_DeepEqualShouldFail_WhenActualDoesNotMatchExpected_GivenPointersToStruct(t *testing.T) {
+	tester := new(testing.T)
+
+	actual := newMockStruct(10)
+	expected := newMockStruct(16)
+
+	DeepEqual(tester, expected, actual)
+
+	if !tester.Failed() {
+		t.Error("DeepEqual did not fail when actual did not match expected given pointers to struct")
+	}
+}
+
+func Test_DeepEqualShouldFail_WhenActualDoesNotMatchExpected_GivenSlices(t *testing.T) {
+	tester := new(testing.T)
+
+	expectedSlice := []int{3, 16, 5, 7}
+	actualSlice := []int{3, 10, 5, 16}
+
+	DeepEqual(tester, expectedSlice, actualSlice)
+
+	if !tester.Failed() {
+		t.Error("DeepEqual did not fail when given two different slices")
+	}
+}
+
+func Test_DeepEqualShouldFail_WhenActualDoesNotMatchExpected_GivenMaps(t *testing.T) {
+	tester := new(testing.T)
+
+	expectedMap := map[int]*mockStruct{
+		10: newMockStruct(10),
+		5:  newMockStruct(5),
+		16: newMockStruct(16),
+	}
+	actualMap := map[int]*mockStruct{
+		10: newMockStruct(16),
+		5:  newMockStruct(5),
+		16: newMockStruct(16),
+	}
+
+	DeepEqual(tester, expectedMap, actualMap)
+
+	if !tester.Failed() {
+		t.Error("DeepEqual did not fail when given two different maps")
+	}
+}
+
+func Test_NotDeepEqualShouldPass_WhenActualDoesNotMatchExpected_GivenPrimitiveTypes(t *testing.T) {
+	tester := new(testing.T)
+
+	actual := 10
+	expected := 16
+
+	NotDeepEqual(tester, expected, actual)
+
+	if tester.Failed() {
+		t.Error("NotDeepEqual did not pass when actual did not match expected given primitive types")
+	}
+}
+
+func Test_NotDeepEqualShouldPass_WhenActualDoesNotMatchExpected_GivenStructs(t *testing.T) {
+	tester := new(testing.T)
+
+	actual := *newMockStruct(10)
+	expected := *newMockStruct(16)
+
+	NotDeepEqual(tester, expected, actual)
+
+	if tester.Failed() {
+		t.Error("NotDeepEqual did not pass when actual did not match expected given structs")
+	}
+}
+
+func Test_NotDeepEqualShouldPass_WhenActualDoesNotMatchExpected_GivenPointersToStruct(t *testing.T) {
+	tester := new(testing.T)
+
+	actual := newMockStruct(10)
+	expected := newMockStruct(16)
+
+	NotDeepEqual(tester, expected, actual)
+
+	if tester.Failed() {
+		t.Error("NotDeepEqual did not pass when actual did not match expected given pointers to struct")
+	}
+}
+
+func Test_NotDeepEqualShouldPass_WhenActualDidNotMatchExpected_GivenSlicesOfValues(t *testing.T) {
+	tester := new(testing.T)
+
+	expectedSlice := []int{3, 10, 5, 16}
+	actualSlice := []int{10, 16, 5, 16}
+
+	NotDeepEqual(tester, expectedSlice, actualSlice)
+
+	if tester.Failed() {
+		t.Error("NotDeepEqual did not pass when given two different slices of values")
+	}
+}
+
+func Test_NotDeepEqualShouldPass_WhenActualDidNotMatchExpected_GivenSliceOfPointers(t *testing.T) {
+	tester := new(testing.T)
+
+	expectedSlice := []*mockStruct{newMockStruct(10), newMockStruct(16)}
+	actualSlice := []*mockStruct{newMockStruct(10), newMockStruct(5)}
+
+	NotDeepEqual(t, expectedSlice, actualSlice)
+
+	if tester.Failed() {
+		t.Error("NotDeepEqual did not pass when given two different slices of pointers")
+	}
+}
+
+func Test_NotDeepEqualShouldPass_WhenActualDidNotMatchExpected_GivenMaps(t *testing.T) {
+	tester := new(testing.T)
+
+	expectedMap := map[int]*mockStruct{
+		10: newMockStruct(10),
+		5:  newMockStruct(5),
+		16: newMockStruct(16),
+	}
+	actualMap := map[int]*mockStruct{
+		10: newMockStruct(10),
+		5:  newMockStruct(16),
+		16: newMockStruct(16),
+	}
+
+	NotDeepEqual(tester, expectedMap, actualMap)
+
+	if tester.Failed() {
+		t.Error("NotDeepEqual did not pass when given two different maps")
+	}
+}
+
+func Test_NotDeepEqualShouldFail_WhenActualMatchesExpected_GivenPrimitiveTypes(t *testing.T) {
+	tester := new(testing.T)
+
+	actual := 10
+	expected := 10
+
+	NotDeepEqual(tester, expected, actual)
+
+	if !tester.Failed() {
+		t.Error("NotDeepEqual did not fail when actual matched expected given primitive types")
+	}
+}
+
+func Test_NotDeepEqualShouldFail_WhenActualMatchesExpected_GivenStructs(t *testing.T) {
+	tester := new(testing.T)
+
+	actual := *newMockStruct(10)
+	expected := *newMockStruct(10)
+
+	NotDeepEqual(tester, expected, actual)
+
+	if !tester.Failed() {
+		t.Error("NotDeepEqual did not fail when actual matched expected given structs")
+	}
+}
+
+func Test_NotDeepEqualShouldFail_WhenActualMatchesExpected_GivenPointersToStruct(t *testing.T) {
+	tester := new(testing.T)
+
+	actual := newMockStruct(10)
+	expected := newMockStruct(10)
+
+	NotDeepEqual(tester, expected, actual)
+
+	if !tester.Failed() {
+		t.Error("NotDeepEqual did not fail when actual matched expected given pointers to struct")
+	}
+}
+
+func Test_NotDeepEqualShouldFail_WhenActualMatchesExpected_GivenSlices(t *testing.T) {
+	tester := new(testing.T)
+
+	expectedSlice := []int{3, 10, 5, 16}
+	actualSlice := []int{3, 10, 5, 16}
+
+	NotDeepEqual(tester, expectedSlice, actualSlice)
+
+	if !tester.Failed() {
+		t.Error("NotDeepEqual did not fail when given two equal slices")
+	}
+}
+
+func Test_NotDeepEqualShouldFail_WhenActualMatchesExpected_GivenMaps(t *testing.T) {
+	tester := new(testing.T)
+
+	expectedMap := map[int]*mockStruct{
+		10: newMockStruct(10),
+		5:  newMockStruct(5),
+		16: newMockStruct(16),
+	}
+	actualMap := map[int]*mockStruct{
+		10: newMockStruct(10),
+		5:  newMockStruct(5),
+		16: newMockStruct(16),
+	}
+
+	NotDeepEqual(tester, expectedMap, actualMap)
+
+	if !tester.Failed() {
+		t.Error("NotDeepEqual did not fail when given two equal maps")
+	}
+}
+
 func Test_NilShouldPass_GivenNilPointer(t *testing.T) {
 	tester := new(testing.T)
 
@@ -296,110 +614,6 @@ func Test_NotNilShouldFail_GivenNilFunction(t *testing.T) {
 	}
 }
 
-func Test_EqualSliceShouldPass_WhenActualSliceMatchesExpected_InValuesAndOrder(t *testing.T) {
-	tester := new(testing.T)
-
-	expectedSlice := []int{3, 10, 5, 16}
-	actualSlice := []int{3, 10, 5, 16}
-
-	EqualSlice(tester, expectedSlice, actualSlice)
-
-	if tester.Failed() {
-		t.Error("EqualSlice did not pass when given two slices with same values in the same order")
-	}
-}
-
-func Test_EqualSliceShouldFail_WhenActualSliceDoesNotMatchExpected_InLength(t *testing.T) {
-	tester := new(testing.T)
-
-	expectedSlice := []int{3, 10, 5, 16}
-	actualSlice := []int{3, 10, 5}
-
-	EqualSlice(tester, expectedSlice, actualSlice)
-
-	if !tester.Failed() {
-		t.Error("EqualSlice did not fail when given two slices with different lengths")
-	}
-}
-
-func Test_EqualSliceShouldFail_WhenActualSliceDoesNotMatchExpected_InValues(t *testing.T) {
-	tester := new(testing.T)
-
-	expectedSlice := []int{3, 10, 5, 16}
-	actualSlice := []int{3, 10, 5, 7}
-
-	EqualSlice(tester, expectedSlice, actualSlice)
-
-	if !tester.Failed() {
-		t.Error("EqualSlice did not fail when given two slices with the same lengths, but different values")
-	}
-}
-
-func Test_EqualSliceShouldFail_WhenActualSliceDoesNotMatchExpected_InOrder(t *testing.T) {
-	tester := new(testing.T)
-
-	expectedSlice := []int{3, 16, 5, 10}
-	actualSlice := []int{3, 10, 5, 16}
-
-	EqualSlice(tester, expectedSlice, actualSlice)
-
-	if !tester.Failed() {
-		t.Error("EqualSlice did not fail when given two slices with same values but in different order")
-	}
-}
-
-func Test_NotEqualSliceShouldPass_WhenActualAndExpectedSlicesHaveDifferentLengths(t *testing.T) {
-	tester := new(testing.T)
-
-	expectedSlice := []int{3, 5, 10}
-	actualSlice := []int{3, 10, 5, 16}
-
-	NotEqualSlice(tester, expectedSlice, actualSlice)
-
-	if tester.Failed() {
-		t.Error("NotEqualSlice did not pass when given two slices with different lengths")
-	}
-}
-
-func Test_NotEqualSliceShouldPass_WhenActualAndExpectedSlicesHaveDifferentValues(t *testing.T) {
-	tester := new(testing.T)
-
-	expectedSlice := []int{3, 5, 10, 8}
-	actualSlice := []int{3, 10, 5, 16}
-
-	NotEqualSlice(tester, expectedSlice, actualSlice)
-
-	if tester.Failed() {
-		t.Error("NotEqualSlice did not pass when given two slices with different values")
-	}
-}
-
-func Test_NotEqualSliceShouldPass_WhenActualAndExpectedSlicesHaveSameValues_ButInDifferentOrder(t *testing.T) {
-	tester := new(testing.T)
-
-	expectedSlice := []int{3, 5, 10, 16}
-	actualSlice := []int{3, 10, 5, 16}
-
-	NotEqualSlice(tester, expectedSlice, actualSlice)
-
-	if tester.Failed() {
-		t.Error("NotEqualSlice did not pass when given two slices had same values in different order")
-	}
-}
-
-func Test_NotEqualSliceShouldFail_WhenActualAndExpectedSlicesHave_SameValuesInSameOrder(t *testing.T) {
-	tester := new(testing.T)
-
-	expectedSlice := []int{3, 5, 10, 16}
-	actualSlice := []int{3, 5, 10, 16}
-
-	NotEqualSlice(tester, expectedSlice, actualSlice)
-
-	if !tester.Failed() {
-		t.Error("NotEqualSlice did not fail when given two slices had same values in same order")
-	}
-}
-
 func Test_SimilarSliceShouldPass_WhenActualSliceMatchesExpected_InValues_ButNotInOrder(t *testing.T) {
 	tester := new(testing.T)
 
@@ -488,171 +702,5 @@ func Test_NotSimilarSliceShouldFail_WhenActualAndExpectedSlicesHaveSameValues(t 
 
 	if !tester.Failed() {
 		t.Error("NotSimilarSlice did not fail given two slices with same values")
-	}
-}
-
-func Test_EqualMapShouldPass_WhenActualMapMatchesExpected_InKeysAndValues(t *testing.T) {
-	tester := new(testing.T)
-
-	expectedMap := map[int]int{
-		10: 10,
-		5:  5,
-		16: 16,
-	}
-	actualMap := map[int]int{
-		5:  5,
-		10: 10,
-		16: 16,
-	}
-
-	EqualMap(tester, expectedMap, actualMap)
-
-	if tester.Failed() {
-		t.Error("EqualMap did not pass when given two maps with same key value pairs")
-	}
-}
-
-func Test_EqualMapShouldFail_WhenActualMapMatchesExpected_InLength(t *testing.T) {
-	tester := new(testing.T)
-
-	expectedMap := map[int]int{
-		10: 10,
-		5:  5,
-		16: 16,
-	}
-	actualMap := map[int]int{
-		10: 10,
-		16: 16,
-	}
-
-	EqualMap(tester, expectedMap, actualMap)
-
-	if !tester.Failed() {
-		t.Error("EqualMap did not fail when given two maps with different lengths")
-	}
-}
-
-func Test_EqualMapShouldFail_WhenActualMapDoesNotMatchExpected_InKeys(t *testing.T) {
-	tester := new(testing.T)
-
-	expectedMap := map[int]int{
-		10: 10,
-		5:  5,
-		16: 16,
-	}
-	actualMap := map[int]int{
-		7:  5,
-		10: 10,
-		16: 16,
-	}
-
-	EqualMap(tester, expectedMap, actualMap)
-
-	if !tester.Failed() {
-		t.Error("EqualMap did not fail when given two maps with different keys")
-	}
-}
-
-func Test_EqualMapShouldFail_WhenActualMapDoesNotMatchExpected_InValues(t *testing.T) {
-	tester := new(testing.T)
-
-	expectedMap := map[int]int{
-		10: 10,
-		5:  5,
-		16: 16,
-	}
-	actualMap := map[int]int{
-		5:  5,
-		10: 10,
-		16: 14,
-	}
-
-	EqualMap(tester, expectedMap, actualMap)
-
-	if !tester.Failed() {
-		t.Error("EqualMap did not fail when given two maps with different values")
-	}
-}
-
-func Test_NotEqualMapShouldPass_WhenActualAndExpectedMapHaveDifferentLengths(t *testing.T) {
-	tester := new(testing.T)
-
-	expectedMap := map[int]int{
-		5:  5,
-		16: 16,
-	}
-	actualMap := map[int]int{
-		5:  5,
-		10: 10,
-		16: 16,
-	}
-
-	NotEqualMap(tester, expectedMap, actualMap)
-
-	if tester.Failed() {
-		t.Error("NotEqualMap did not pass when given two maps with different lengths")
-	}
-}
-
-func Test_NotEqualMapShouldPass_WhenActualAndExpectedMapHaveDifferentKeys(t *testing.T) {
-	tester := new(testing.T)
-
-	expectedMap := map[int]int{
-		7:  10,
-		5:  5,
-		16: 16,
-	}
-	actualMap := map[int]int{
-		5:  5,
-		10: 10,
-		16: 16,
-	}
-
-	NotEqualMap(tester, expectedMap, actualMap)
-
-	if tester.Failed() {
-		t.Error("NotEqualMap did not pass when given two maps with different keys")
-	}
-}
-
-func Test_NotEqualMapShouldPass_WhenActualAndExpectedMapHaveDifferentValues(t *testing.T) {
-	tester := new(testing.T)
-
-	expectedMap := map[int]int{
-		10: 5,
-		5:  5,
-		16: 16,
-	}
-	actualMap := map[int]int{
-		5:  5,
-		10: 10,
-		16: 16,
-	}
-
-	NotEqualMap(tester, expectedMap, actualMap)
-
-	if tester.Failed() {
-		t.Error("NotEqualMap did not pass when given two maps with different values")
-	}
-}
-
-func Test_NotEqualMapShouldFail_WhenActualAndExpectedMapHaveSameValuesAndKeys(t *testing.T) {
-	tester := new(testing.T)
-
-	expectedMap := map[int]int{
-		10: 10,
-		5:  5,
-		16: 16,
-	}
-	actualMap := map[int]int{
-		5:  5,
-		10: 10,
-		16: 16,
-	}
-
-	NotEqualMap(tester, expectedMap, actualMap)
-
-	if !tester.Failed() {
-		t.Error("NotEqualMap did not fail when given two equal maps")
 	}
 }

@@ -1,6 +1,7 @@
 package goassert
 
 import (
+	"reflect"
 	"testing"
 )
 
@@ -38,7 +39,7 @@ func NotPanic(t testing.TB, underTest func()) {
 Asserts that the given function panics with the specified error.
 The actual error must be of the same type and value as the given error
 */
-func PanicWithError[K comparable](t testing.TB, expectedError K, underTest func()) {
+func PanicWithError[T any](t testing.TB, expectedError T, underTest func()) {
 	t.Helper()
 
 	defer func() {
@@ -48,15 +49,8 @@ func PanicWithError[K comparable](t testing.TB, expectedError K, underTest func(
 			return
 		}
 
-		error, converted := r.(K)
-		if converted {
-			Equal(t, expectedError, error)
-		} else {
-			t.Errorf(
-				"Panic threw an unexpected error type. Expected Type: %T. Actual Type: %T",
-				expectedError,
-				r,
-			)
+		if !reflect.DeepEqual(expectedError, r) {
+			t.Errorf("Expected panic with %v error but got %v error", expectedError, r)
 		}
 	}()
 
@@ -67,7 +61,7 @@ func PanicWithError[K comparable](t testing.TB, expectedError K, underTest func(
 Asserts that the given function does not panic with the specified error.
 The assertion succeeds if the given function does not panic or panics with a different error
 */
-func NotPanicWithError[K comparable](t testing.TB, expectedError K, underTest func()) {
+func NotPanicWithError[T any](t testing.TB, expectedError T, underTest func()) {
 	t.Helper()
 
 	defer func() {
@@ -76,9 +70,8 @@ func NotPanicWithError[K comparable](t testing.TB, expectedError K, underTest fu
 			return
 		}
 
-		error, converted := r.(K)
-		if converted {
-			NotEqual(t, expectedError, error)
+		if reflect.DeepEqual(expectedError, r) {
+			t.Errorf("Expected panic with different error than %v error", expectedError)
 		}
 	}()
 
